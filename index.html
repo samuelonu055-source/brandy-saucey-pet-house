@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Brandy & Saucey Pet House - Buy Dogs</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #fff8f0; margin: 0; }
+        .header { background: #ff6a00; color: white; padding: 20px; text-align: center; position: relative; }
+        .header h1 { margin: 0; }
+        .admin-login-btn { position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.3); color: white; border: 1px solid white; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+        .admin-login-btn:hover { background: rgba(0,0,0,0.5); }
+        .dogs { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px; }
+        .card { border: 1px solid #ddd; border-radius: 15px; overflow: hidden; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .card img { width: 100%; height: 220px; object-fit: cover; }
+        .card-body { padding: 15px; }
+        .price { color: #ff6a00; font-weight: bold; font-size: 20px; margin-bottom: 10px; }
+        .btn { padding: 10px 15px; border: none; border-radius: 8px; cursor: pointer; margin: 5px 5px 0 0; font-weight: bold; text-decoration: none; display: inline-block; font-size: 14px; }
+        .btn-whatsapp { background: #25D366; color: white; }
+        .btn-facebook { background: #1877F2; color: white; }
+        .btn-like { background: #ffe0cc; color: #ff6a00; }
+        .btn-delete { background: #dc3545; color: white; width: 100%; margin-top: 10px; }
+        .post-form { background: #fff3e6; padding: 20px; margin: 20px; border-radius: 15px; max-width: 500px; margin-left: auto; margin-right: auto; display: none; }
+        .post-form input { width: 95%; padding: 10px; margin: 5px 0; border-radius: 8px; border: 1px solid #ccc; display: block; }
+        .post-form button { width: 100%; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>🐶 Brandy & Saucey Pet House</h1>
+        
+        <!-- ======================================================= -->
+        <!-- 📞 CALL NUMBER SHOWN IN THE HEADER BELOW -->
+        <!-- ======================================================= -->
+        <p>Best Dogs in Nigeria | Call: +1 (570) 447-0391</p> 
+        
+        <button class="admin-login-btn" id="loginBtn" onclick="toggleAdmin()">🔒 Admin Login</button>
+    </div>
+
+    <div class="post-form" id="adminForm">
+        <h3>Post New Dog (Admin Panel)</h3>
+        <input id="dogName" placeholder="Dog Name e.g German Shepherd">
+        <input id="dogPrice" placeholder="Price e.g 450">
+        <input id="dogImage" placeholder="Image Link from Google">
+        <input id="dogDesc" placeholder="Description e.g 3 months old, vaccinated">
+        <button class="btn btn-whatsapp" onclick="addDog()">Post Dog Now</button>
+        <p><small>Tip: Search Google Images, right-click and choose "Copy image address", then paste above.</small></p>
+    </div>
+
+    <div id="dogs" class="dogs"></div>
+
+    <script>
+        let isAdminLoggedIn = false;
+        const ADMIN_PASSWORD = "brandy123"; 
+
+        // 💵 Default items converted to Dollar format
+        let defaultDogs = [
+            {name: "German Shepherd Puppy", price: "\$450", img: "https://unsplash.com", desc: "3 months, vaccinated, very active"},
+            {name: "Boerboel", price: "\$600", img: "https://unsplash.com", desc: "4 months, strong guard dog"}
+        ];
+
+        let dogs = JSON.parse(localStorage.getItem('brandyDogs'));
+        if (!dogs || dogs.length === 0) {
+            dogs = defaultDogs;
+            localStorage.setItem('brandyDogs', JSON.stringify(dogs));
+        }
+
+        function toggleAdmin() {
+            if (!isAdminLoggedIn) {
+                let passwordInput = prompt("Enter Admin Password to manage postings:");
+                if (passwordInput === ADMIN_PASSWORD) {
+                    isAdminLoggedIn = true;
+                    document.getElementById('adminForm').style.display = "block";
+                    document.getElementById('loginBtn').innerText = "🔓 Admin Logout";
+                    alert("Access granted! Admin panel and delete controls are now visible.");
+                    showDogs();
+                } else if (passwordInput !== null) {
+                    alert("Incorrect password. Access denied.");
+                }
+            } else {
+                isAdminLoggedIn = false;
+                document.getElementById('adminForm').style.display = "none";
+                document.getElementById('loginBtn').innerText = "🔒 Admin Login";
+                alert("Logged out of admin panel.");
+                showDogs();
+            }
+        }
+
+        function showDogs() {
+            let box = document.getElementById('dogs');
+            box.innerHTML = "";
+            dogs.forEach((d, i) => {
+                let deleteButtonHTML = isAdminLoggedIn ? `<button class="btn btn-delete" onclick="deleteDog(${i})">🗑️ Delete (Sold Out)</button>` : '';
+
+                box.innerHTML += `
+                    <div class="card">
+                        <img src="${d.img}" alt="${d.name}">
+                        <div class="card-body">
+                            <h3>${d.name}</h3>
+                            <p>${d.desc}</p>
+                            <div class="price">${d.price}</div>
+                            <button class="btn btn-like" onclick="likeDog(${i})">❤️ Like</button>
+                            <button class="btn btn-whatsapp" onclick="buyDog('${d.name}')">WhatsApp Buy</button>
+                            <button class="btn btn-facebook" onclick="visitFacebook()">Facebook Page</button>
+                            ${deleteButtonHTML}
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function addDog() {
+            if (!isAdminLoggedIn) {
+                alert("Unauthorized action.");
+                return;
+            }
+
+            let name = document.getElementById('dogName').value.trim();
+            let price = document.getElementById('dogPrice').value.trim();
+            let img = document.getElementById('dogImage').value.trim();
+            let desc = document.getElementById('dogDesc').value.trim();
+
+            if (!name || !price || !img) {
+                alert("Please fill in the Name, Price, and Image Link fields!");
+                return;
+            }
+
+            dogs.unshift({ name, price: "\$" + price, img, desc });
+            localStorage.setItem('brandyDogs', JSON.stringify(dogs));
+            showDogs();
+            
+            alert("Dog Posted Successfully!");
+            
+            document.getElementById('dogName').value = "";
+            document.getElementById('dogPrice').value = "";
+            document.getElementById('dogImage').value = "";
+            document.getElementById('dogDesc').value = "";
+        }
+
+        function deleteDog(index) {
+            if (!isAdminLoggedIn) {
+                alert("Unauthorized action.");
+                return;
+            }
+            
+            if (confirm(`Are you sure you want to remove "${dogs[index].name}"? This cannot be undone.`)) {
+                dogs.splice(index, 1);
+                localStorage.setItem('brandyDogs', JSON.stringify(dogs));
+                showDogs();
+                alert("Dog listing removed successfully!");
+            }
+        }
+
+        function likeDog(i) {
+            alert("You liked " + dogs[i].name + " ❤️");
+        }
+
+        function buyDog(name) {
+            // =======================================================
+            // 💬 CHAT LINK TARGETING YOUR SPECIFIC WHATSAPP NUMBER
+            // =======================================================
+            let phone = "447869507421"; 
+            
+            let message = encodeURIComponent(`Hello, I am interested in buying the ${name} from Brandy & Saucey Pet House.`);
+            window.open(`https://wa.me{phone}?text=${message}`, '_blank');
+        }
+
+        function visitFacebook() {
+            // =======================================================
+            // 🌐 LINKING DIRECTLY TO YOUR FACEBOOK BUSINESS PROFILES
+            // =======================================================
+            let facebookUrl = "https://www.facebook.com/share/1DeM6sJVJZ/?mibextid=wwXIfr";
+            
+            window.open(facebookUrl, '_blank');
+        }
+
+        showDogs();
+    </script>
+</body>
+</html>
