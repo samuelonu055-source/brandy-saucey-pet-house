@@ -1,179 +1,185 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Brandy & Saucey Pet House - Buy Dogs</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #fff8f0; margin: 0; }
-        .header { background: #ff6a00; color: white; padding: 20px; text-align: center; position: relative; }
-        .header h1 { margin: 0; }
-        .admin-login-btn { position: absolute; top: 20px; right: 20px; background: rgba(0,0,0,0.3); color: white; border: 1px solid white; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; }
-        .admin-login-btn:hover { background: rgba(0,0,0,0.5); }
-        .dogs { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 20px; }
-        .card { border: 1px solid #ddd; border-radius: 15px; overflow: hidden; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        .card img { width: 100%; height: 220px; object-fit: cover; }
-        .card-body { padding: 15px; }
-        .price { color: #ff6a00; font-weight: bold; font-size: 20px; margin-bottom: 10px; }
-        .btn { padding: 10px 15px; border: none; border-radius: 8px; cursor: pointer; margin: 5px 5px 0 0; font-weight: bold; text-decoration: none; display: inline-block; font-size: 14px; }
-        .btn-whatsapp { background: #25D366; color: white; }
-        .btn-facebook { background: #1877F2; color: white; }
-        .btn-like { background: #ffe0cc; color: #ff6a00; }
-        .btn-delete { background: #dc3545; color: white; width: 100%; margin-top: 10px; }
-        .post-form { background: #fff3e6; padding: 20px; margin: 20px; border-radius: 15px; max-width: 500px; margin-left: auto; margin-right: auto; display: none; }
-        .post-form input { width: 95%; padding: 10px; margin: 5px 0; border-radius: 8px; border: 1px solid #ccc; display: block; }
-        .post-form button { width: 100%; margin-top: 10px; }
-    </style>
-</head>
-<body>
-
-    <div class="header">
-        <h1>🐶 Brandy & Saucey Pet House</h1>
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Brandy & Saucey Pet Home - Fully Functional</title> 
+    <style> 
+        *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif} 
+        body{background:#FFFCF6;color:#3D2314} 
+        .top{display:flex;justify-content:space-between;padding:15px 25px;background:white;align-items:center;position:sticky;top:0;z-index:10;box-shadow:0 2px 5px rgba(0,0,0,0.05)} 
+        .logo{font-weight:900;color:#3D2314;font-size:20px} 
+        .btn{padding:10px 16px;border-radius:8px;font-weight:700;cursor:pointer;border:none} 
+        .btn-f{background:#E76F26;color:white} 
+        .btn-f:hover{background:#cf5c1b}
+        .btn-o{background:white;border:1.5px solid #E76F26;color:#E76F26} 
+        .btn-o:hover{background:#fff3ec}
+        .hero{background:#E9D9B9;padding:35px 25px;display:flex;gap:20px;flex-wrap:wrap;align-items:center;justify-content:between} 
+        .hero h1{font-size:36px;color:#3D2314;margin-bottom:10px} 
+        .section{padding:25px;max-width:1200px;margin:0 auto} 
+        .upload{background:white;padding:20px;border-radius:16px;border:2px dashed #E76F26;margin-bottom:35px} 
+        .upload h3{margin-bottom:15px}
+        .upload input,.upload textarea{width:100%;padding:11px;margin:7px 0;border:1px solid #ccc;border-radius:8px;font-size:14px} 
+        #previewImg{width:100%;max-height:250px;object-fit:cover;border-radius:10px;display:none;margin-top:10px} 
         
-        <!-- ======================================================= -->
-        <!-- 📞 CALL NUMBER SHOWN IN THE HEADER BELOW -->
-        <!-- ======================================================= -->
-        <p>Best Dogs in Nigeria | Call: +1 (570) 447-0391</p> 
-        
-        <button class="admin-login-btn" id="loginBtn" onclick="toggleAdmin()">🔒 Admin Login</button>
-    </div>
+        /* Filter / Search Bar Styling */
+        .filter-container {margin-bottom: 20px;}
+        .search-input {width:100%; padding:12px 20px; border:1px solid #e9dcc6; border-radius:25px; font-size:15px; outline:none; box-shadow:0 2px 6px rgba(0,0,0,0.02)}
+        .search-input:focus {border-color:#E76F26}
 
-    <div class="post-form" id="adminForm">
-        <h3>Post New Dog (Admin Panel)</h3>
-        <input id="dogName" placeholder="Dog Name e.g German Shepherd">
-        <input id="dogPrice" placeholder="Price e.g 450">
-        <input id="dogImage" placeholder="Image Link from Google">
-        <input id="dogDesc" placeholder="Description e.g 3 months old, vaccinated">
-        <button class="btn btn-whatsapp" onclick="addDog()">Post Dog Now</button>
-        <p><small>Tip: Search Google Images, right-click and choose "Copy image address", then paste above.</small></p>
-    </div>
+        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:25px} 
+        .card{background:white;border-radius:16px;padding:15px;position:relative;box-shadow:0 4px 12px rgba(0,0,0,0.06);display:flex;flex-direction:column;justify-content:space-between} 
+        .card img.main{width:100%;height:220px;object-fit:cover;border-radius:12px} 
+        .card h3{margin-top:12px;font-size:20px}
+        .card .info-text{font-size:13px;color:#666;margin:5px 0 10px 0}
+        .card .about-text{font-size:14px;margin-bottom:15px;color:#444}
+        .actions{display:flex;justify-content:space-between;align-items:center;margin:10px 0;gap:4px;flex-wrap:wrap} 
+        .actions .btn {padding: 6px 10px; font-size: 12px;}
+        .like{cursor:pointer;font-size:14px;user-select:none;background:#f5f5f5;padding:6px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:5px} 
+        .like.active{background:#ffebee;color:red;font-weight:900} 
+        .comment-box{border-top:1px solid #eee;margin-top:10px;padding-top:10px} 
+        .cmt{font-size:13px;background:#f4efe6;padding:7px 10px;border-radius:12px;margin:4px 0;word-break:break-word} 
+        .comment-box input{width:100%;padding:9px 15px;border:1px solid #ddd;border-radius:20px;margin-top:6px;font-size:13px} 
+        .msg-box{margin-top:10px;border-top:1px solid #eee;padding-top:10px}
+        .msg-box input{width:100%;padding:9px 15px;border:1px solid #ddd;border-radius:20px;font-size:13px}
+        .sold-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);color:white;font-size:36px;font-weight:900;display:none;align-items:center;justify-content:center;border-radius:16px;z-index:3;letter-spacing:2px} 
+        .card.sold .sold-overlay{display:flex} 
+        .inbox{background:white;padding:25px;border-radius:16px;margin-top:45px;border:1px solid #e9dcc6} 
+        .inbox h2{margin-bottom:15px}
+        .inbox-item{border:1px solid #eee;padding:15px;border-radius:10px;margin:10px 0;background:#FFFCF6;position:relative} 
+        .inbox-item .time{font-size:11px;color:#999;position:absolute;top:15px;right:15px}
+        .inbox-item .pet-tag{display:inline-block;background:#E76F26;color:white;font-size:11px;padding:2px 6px;border-radius:4px;margin-bottom:5px;font-weight:bold}
+    </style> 
+</head> 
+<body> 
 
-    <div id="dogs" class="dogs"></div>
+    <div class="top"> 
+        <div class="logo">🐾 Brandy & Saucey Pet Home</div> 
+        <button class="btn btn-o" onclick="document.getElementById('inboxSec').scrollIntoView({behavior:'smooth'})">📥 Inbox (<span id="inboxCount">0</span>)</button> 
+    </div> 
+
+    <div class="hero"> 
+        <div style="flex:1; min-width:280px;">
+            <h1>Find Your New Best Friend</h1>
+            <p>Like, Comment & Message us DIRECTLY inside the website - No WhatsApp needed!</p>
+        </div> 
+        <img src="https://unsplash.com" style="width:320px;height:200px;object-fit:cover;border-radius:18px"> 
+    </div> 
+
+    <div class="section"> 
+        <!-- Form Section -->
+        <div class="upload"> 
+            <h3 id="formTitle">Post New Pet - Direct Upload</h3> 
+            <input id="pName" placeholder="Pet Name e.g Draco"> 
+            <input id="pInfo" placeholder="Breed • Age e.g White Husky • 2 years"> 
+            <textarea id="pAbout" placeholder="About pet description..."></textarea> 
+            <label id="uploadLabel" style="font-weight:800;display:block;margin-top:8px;font-size:14px">Upload Picture Directly *</label> 
+            <input type="file" id="pFile" accept="image/*" onchange="previewFile()"> 
+            <img id="previewImg"> 
+            <button class="btn btn-f" id="submitPetBtn" style="width:100%;margin-top:12px;padding:13px" onclick="addPet()">Post Pet</button> 
+        </div> 
+
+        <!-- Filter / Search Field -->
+        <div class="filter-container">
+            <input type="text" id="searchBar" class="search-input" placeholder="🔍 Search pets by name, breed, or age attributes..." oninput="renderPets()">
+        </div>
+
+        <!-- Pet Grid Display Section -->
+        <h2>Available Pets</h2>
+        <div class="grid" id="petGrid"></div> 
+
+        <!-- Inbox Section -->
+        <div class="inbox" id="inboxSec">
+            <h2>📥 Live Inbound Messages from Buyers</h2>
+            <div id="inboxList">
+                <p style="color:#888; font-style:italic;">No messages received yet.</p>
+            </div>
+        </div>
+    </div> 
 
     <script>
-        let isAdminLoggedIn = false;
-        const ADMIN_PASSWORD = "brandy123"; 
-
-        // 💵 Default items converted to Dollar format
-        let defaultDogs = [
-            {name: "German Shepherd Puppy", price: "\$450", img: "https://unsplash.com", desc: "3 months, vaccinated, very active"},
-            {name: "Boerboel", price: "\$600", img: "https://unsplash.com", desc: "4 months, strong guard dog"}
+        // Default initial items reflecting your uploaded images
+        const defaultPets = [
+            {
+                id: 1710000000002,
+                name: "Saucey",
+                info: "Brindle Pit Bull Mix • 1 year • High Energy",
+                about: "Saucey is a sweet boy who absolutely obsessed with plush toys! He loves his Chewy box deliveries and playing interactive tug-of-war games.",
+                image: "https://unsplash.com", 
+                likes: 8,
+                liked: false,
+                sold: false,
+                comments: [{user: "Mark", text: "What a handsome boy! Is he good with cats?"}]
+            },
+            {
+                id: 1710000000001,
+                name: "Draco",
+                info: "Siberian Husky • 2 years • Vocal & Playful",
+                about: "Draco loves outdoor running, snowy weather, and knows basic obedience commands. He has striking blue eyes and a big, happy personality!",
+                image: "https://unsplash.com",
+                likes: 12,
+                liked: false,
+                sold: false,
+                comments: [{user: "Ada", text: "I love Draco, how much? 😍"}]
+            }
         ];
 
-        let dogs = JSON.parse(localStorage.getItem('brandyDogs'));
-        if (!dogs || dogs.length === 0) {
-            dogs = defaultDogs;
-            localStorage.setItem('brandyDogs', JSON.stringify(dogs));
+        let pets = JSON.parse(localStorage.getItem('pets')) || defaultPets;
+        let messages = JSON.parse(localStorage.getItem('messages')) || [];
+        let base64ImageString = "";
+        let editingPetId = null; // Track item status for updates
+
+        window.onload = function() {
+            renderPets();
+            renderMessages();
+        };
+
+        function previewFile() {
+            const preview = document.getElementById('previewImg');
+            const file = document.getElementById('pFile').files[0];
+            const reader = new FileReader();
+
+            reader.addEventListener("load", function () {
+                preview.src = reader.result;
+                preview.style.display = "block";
+                base64ImageString = reader.result; 
+            }, false);
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
         }
 
-        function toggleAdmin() {
-            if (!isAdminLoggedIn) {
-                let passwordInput = prompt("Enter Admin Password to manage postings:");
-                if (passwordInput === ADMIN_PASSWORD) {
-                    isAdminLoggedIn = true;
-                    document.getElementById('adminForm').style.display = "block";
-                    document.getElementById('loginBtn').innerText = "🔓 Admin Logout";
-                    alert("Access granted! Admin panel and delete controls are now visible.");
-                    showDogs();
-                } else if (passwordInput !== null) {
-                    alert("Incorrect password. Access denied.");
+        // Action: Post or Update Pet Listing
+        function addPet() {
+            const name = document.getElementById('pName').value.trim();
+            const info = document.getElementById('pInfo').value.trim();
+            const about = document.getElementById('pAbout').value.trim();
+
+            if(!name || !info) {
+                alert("Please provide at least a Name and Breed/Age details!");
+                return;
+            }
+
+            if(editingPetId) {
+                // Update mode
+                const pet = pets.find(p => p.id === editingPetId);
+                if(pet) {
+                    pet.name = name;
+                    pet.info = info;
+                    pet.about = about || "No description provided.";
+                    if(base64ImageString) {
+                        pet.image = base64ImageString;
+                    }
                 }
+                editingPetId = null;
+                document.getElementById('formTitle').innerText = "Post New Pet - Direct Upload";
+                document.getElementById('submitPetBtn').innerText = "Post Pet";
+                document.getElementById('uploadLabel').innerText = "Upload Picture Directly *";
             } else {
-                isAdminLoggedIn = false;
-                document.getElementById('adminForm').style.display = "none";
-                document.getElementById('loginBtn').innerText = "🔒 Admin Login";
-                alert("Logged out of admin panel.");
-                showDogs();
-            }
-        }
+                // Create mode
+                if(!base64ImageString) {
+                    alert("Please upload a picture for your new listing!");
+                    return;
+                }
 
-        function showDogs() {
-            let box = document.getElementById('dogs');
-            box.innerHTML = "";
-            dogs.forEach((d, i) => {
-                let deleteButtonHTML = isAdminLoggedIn ? `<button class="btn btn-delete" onclick="deleteDog(${i})">🗑️ Delete (Sold Out)</button>` : '';
-
-                box.innerHTML += `
-                    <div class="card">
-                        <img src="${d.img}" alt="${d.name}">
-                        <div class="card-body">
-                            <h3>${d.name}</h3>
-                            <p>${d.desc}</p>
-                            <div class="price">${d.price}</div>
-                            <button class="btn btn-like" onclick="likeDog(${i})">❤️ Like</button>
-                            <button class="btn btn-whatsapp" onclick="buyDog('${d.name}')">WhatsApp Buy</button>
-                            <button class="btn btn-facebook" onclick="visitFacebook()">Facebook Page</button>
-                            ${deleteButtonHTML}
-                        </div>
-                    </div>`;
-            });
-        }
-
-        function addDog() {
-            if (!isAdminLoggedIn) {
-                alert("Unauthorized action.");
-                return;
-            }
-
-            let name = document.getElementById('dogName').value.trim();
-            let price = document.getElementById('dogPrice').value.trim();
-            let img = document.getElementById('dogImage').value.trim();
-            let desc = document.getElementById('dogDesc').value.trim();
-
-            if (!name || !price || !img) {
-                alert("Please fill in the Name, Price, and Image Link fields!");
-                return;
-            }
-
-            dogs.unshift({ name, price: "\$" + price, img, desc });
-            localStorage.setItem('brandyDogs', JSON.stringify(dogs));
-            showDogs();
-            
-            alert("Dog Posted Successfully!");
-            
-            document.getElementById('dogName').value = "";
-            document.getElementById('dogPrice').value = "";
-            document.getElementById('dogImage').value = "";
-            document.getElementById('dogDesc').value = "";
-        }
-
-        function deleteDog(index) {
-            if (!isAdminLoggedIn) {
-                alert("Unauthorized action.");
-                return;
-            }
-            
-            if (confirm(`Are you sure you want to remove "${dogs[index].name}"? This cannot be undone.`)) {
-                dogs.splice(index, 1);
-                localStorage.setItem('brandyDogs', JSON.stringify(dogs));
-                showDogs();
-                alert("Dog listing removed successfully!");
-            }
-        }
-
-        function likeDog(i) {
-            alert("You liked " + dogs[i].name + " ❤️");
-        }
-
-        function buyDog(name) {
-            // =======================================================
-            // 💬 CHAT LINK TARGETING YOUR SPECIFIC WHATSAPP NUMBER
-            // =======================================================
-            let phone = "447869507421"; 
-            
-            let message = encodeURIComponent(`Hello, I am interested in buying the ${name} from Brandy & Saucey Pet House.`);
-            window.open(`https://wa.me{phone}?text=${message}`, '_blank');
-        }
-
-        function visitFacebook() {
-            // =======================================================
-            // 🌐 LINKING DIRECTLY TO YOUR FACEBOOK BUSINESS PROFILES
-            // =======================================================
-            let facebookUrl = "https://www.facebook.com/share/1DeM6sJVJZ/?mibextid=wwXIfr";
-            
-            window.open(facebookUrl, '_blank');
-        }
-
-        showDogs();
-    </script>
-</body>
-</html>
